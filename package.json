@@ -1,0 +1,28 @@
+{
+  "name": "lash",
+  "version": "0.0.0",
+  "description": "Small simple serial async stack ",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap ./test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bpostlethwaite/lash.git"
+  },
+  "keywords": [
+    "stack",
+    "async",
+    "connect",
+    "middleware"
+  ],
+  "author": "bpostlethwaite",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bpostlethwaite/lash/issues"
+  },
+  "homepage": "https://github.com/bpostlethwaite/lash"
+}
