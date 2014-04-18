@@ -42,9 +42,9 @@ function Lash (spec) {
           , n = 0
           , l = steps.length
 
-        nextStep(cb, args)
+        nextStep(lashNext, args)
 
-        function cb () {
+        function lashNext () {
             var args = Array.prototype.slice.call(arguments)
             var er = args.shift()
             if (er)
@@ -52,7 +52,7 @@ function Lash (spec) {
             if (++n === l)
                 return cb_.apply(self, [null].concat(args))
 
-            return nextStep(cb, args)
+            return nextStep(lashNext, args)
         }
 
         function nextStep (cb, args) {
