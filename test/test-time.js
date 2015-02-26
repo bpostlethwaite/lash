@@ -3,25 +3,16 @@
 var Lash = require('../index');
 var test = require('tap').test;
 
-test('Lash error handling', function (t) {
+test('Lash timer test', function (t) {
 
-    t.plan(1);
+    t.plan(2);
     var s = Lash({req:2, res:3});
+
+    s.startTimer();
 
     s.stack(function addreqres (next) {
         var value = this.res + this.req;
         next(null, value);
-    });
-
-    s.stack(function produceerror (next) {
-        // pass through this step right away with no errors
-        // then fire an error 2 seconds after.
-        // it should interrupt the stack down the line.
-        setTimeout(function () {
-            next('this is an error');
-        }, 2000);
-
-        next(null);
     });
 
     s.stack(function mockProcessingFunc (next, value) {
@@ -41,14 +32,10 @@ test('Lash error handling', function (t) {
         }, 3000);
     });
 
-    s.stack(function shouldNotReach () {
-        t.fail('should not hit this function');
-    });
-
-    // time() method accessible through 'this'
-
-    s.stack(function closeStack (err) {
-        t.equal(err, 'this is an error');
+    s.stack(function closeStack (err, value) {
+        var secondsRun = this.time();
+        t.ok(secondsRun, 'stack took '+ secondsRun +' seconds.');
+        t.equal(value, 15, 'got value from stack, and closed it.');
     });
 
     s.collapse();
