@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tap ./test/"
+    "test": "tap ./test/*"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/bpostlethwaite/lash/issues"
   },
-  "homepage": "https://github.com/bpostlethwaite/lash"
+  "homepage": "https://github.com/bpostlethwaite/lash",
+  "devDependencies": {
+    "tap": "^0.7.0"
+  }
 }

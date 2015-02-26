@@ -1,7 +1,8 @@
+'use strict';
 /*
  * Really barebones middleware handler.
  * Functions can pass values to each other.
- * The last argument is always "next" except
+ * The last argument is always 'next' except
  * for the last middleware in the stack, which
  * handles err as the first arg proceeded by any
  * additional passed in args from the previous func
@@ -18,56 +19,69 @@
  * December 2013
  */
 
-module.exports = Lash
-
 function Lash (spec) {
 
-    var self = {}
-    if (!spec) spec = {}
+    var self = {};
+    if (!spec) spec = {};
 
     Object.keys(spec).forEach( function (key) {
-        self[key] = spec[key]
-    })
+        self[key] = spec[key];
+    });
 
-    var steps = []
+    var steps = [];
 
 
     function stack (fn) {
-        steps.push(fn)
+        steps.push(fn);
     }
 
     function collapse () {
-        var args = Array.prototype.slice.call(arguments)
-          , cb_ = steps.pop()
-          , n = 0
-          , l = steps.length
-
-        nextStep(lashNext, args)
-
-        function lashNext () {
-            var args = Array.prototype.slice.call(arguments)
-            var er = args.shift()
-            if (er)
-                return cb_.apply(self, [er].concat(args))
-            if (++n === l)
-                return cb_.apply(self, [null].concat(args))
-
-            return nextStep(lashNext, args)
-        }
+        var args = Array.prototype.slice.call(arguments);
+        var cb_ = steps.pop();
+        var n = 0;
+        var l = steps.length;
 
         function nextStep (cb, args) {
-            var s = steps[n]
+            var s = steps[n];
 
-            if (typeof s === "function")
-                return s.apply(self, [cb].concat(args))
-
-            else throw new Error("Only functions in chain!: "+s)
+            if (typeof s === 'function') {
+                return s.apply(self, [cb].concat(args));
+            } else {
+                throw new Error('Only functions in chain!: ' + s);
+            }
         }
+
+        var lashNext = function (args) {
+
+            var er = args.shift();
+
+            if (er) {
+                lashNext = function () {};
+                return cb_.apply(self, [er].concat(args));
+            }
+
+            if (++n === l) {
+                lashNext = function () {};
+                return cb_.apply(self, [null].concat(args));
+            }
+
+            return nextStep(next, args);
+        };
+
+        function next () {
+            var args = Array.prototype.slice.call(arguments);
+            lashNext(args);
+        }
+
+        nextStep(next, args);
+
     }
 
-    self.stack = stack
-    self.collapse = collapse
+    self.stack = stack;
+    self.collapse = collapse;
 
 
-    return self
+    return self;
 }
+
+module.exports = Lash;
