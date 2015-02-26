@@ -24,6 +24,18 @@ function Lash (spec) {
     var self = {};
     if (!spec) spec = {};
 
+    self.startTime = null;
+
+    self.startTimer = function () {
+        self.startTime = process.hrtime();
+    };
+
+    self.time = function () {
+        var stackTime = process.hrtime(self.startTime);
+        var numSeconds = stackTime[0] + stackTime[1] / 1e9;
+        return numSeconds;
+    };
+
     Object.keys(spec).forEach( function (key) {
         self[key] = spec[key];
     });
