@@ -1,6 +1,6 @@
 {
   "name": "lash",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Small simple serial async stack ",
   "main": "index.js",
   "directories": {
