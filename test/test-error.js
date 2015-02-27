@@ -6,12 +6,7 @@ var test = require('tap').test;
 test('Lash error handling', function (t) {
 
     t.plan(1);
-    var s = Lash({req:2, res:3});
-
-    s.stack(function addreqres (next) {
-        var value = this.res + this.req;
-        next(null, value);
-    });
+    var s = Lash();
 
     s.stack(function produceerror (next) {
         // pass through this step right away with no errors
@@ -24,28 +19,26 @@ test('Lash error handling', function (t) {
         next(null);
     });
 
-    s.stack(function mockProcessingFunc (next, value) {
+    s.stack(function mockProcessingFunc (next) {
         // here we pretend to be doing some work for 3
         // seconds. If an err happens during the work,
         // next should be noop.
         setTimeout(function () {
 
-            // things still happen here until
+            // things can still happen here until
             // next() is called and it goes nowhere.
-            value *= 3;
 
             // should be noop and lead nowhere
             // as previous function errored the stack.
-            next(null, value);
+            next(null);
 
         }, 3000);
     });
 
-    s.stack(function shouldNotReach () {
+    s.stack(function shouldNotReach (next) {
         t.fail('should not hit this function');
+        next(null);
     });
-
-    // time() method accessible through 'this'
 
     s.stack(function closeStack (err) {
         t.equal(err, 'this is an error');
