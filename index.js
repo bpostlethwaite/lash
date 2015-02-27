@@ -53,6 +53,7 @@ function Lash (spec) {
         var n = 0;
         var l = steps.length;
 
+
         function nextStep (cb, args) {
             var s = steps[n];
 
@@ -64,6 +65,14 @@ function Lash (spec) {
         }
 
         var lashNext = function (args) {
+
+            /*
+            * If the first argument passed to next() is not `null`,
+            * it will be treated as an error, and the stack
+            * will skip to the last step and close up shop and
+            * no-op the next() function so that the last
+            * step will not be fired twice.
+            */
 
             var er = args.shift();
 
