@@ -32,7 +32,7 @@ function Lash (spec) {
 
     self.time = function () {
         var stackTime = process.hrtime(self.startTime);
-        var numSeconds = stackTime[0] + stackTime[1] / 1e6;
+        var numSeconds = (stackTime[0] + stackTime[1] / 1e9) * 1e3;
         return numSeconds;
     };
 

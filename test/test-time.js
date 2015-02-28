@@ -20,8 +20,8 @@ test('Lash timer test', function (t) {
     s.stack(function closeStack (err) {
         if (err) return t.fail('should not error');
 
-        var secondsRun = this.time();
-        t.equal(Math.round(secondsRun), 3, 'got time from stack');
+        var milliSecondsRun = this.time();
+        t.equal(Math.floor(milliSecondsRun / 1e3) , 3, 'got time from stack');
     });
 
     s.collapse();
