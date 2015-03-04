@@ -27,13 +27,13 @@ function Lash (spec) {
     self.timers = {};
 
     self.startTimer = function (timerId) {
-        if (!timerId) throw new Error('no timerId specified');
+        if (typeof timerId !== 'string') throw new Error('timerId must be a string');
         self.timers[timerId] = {};
         self.timers[timerId].startTime = process.hrtime();
     };
 
     self.time = function (timerId) {
-        if (!timerId) throw new Error('no timerId specified');
+        if (typeof timerId !== 'string') throw new Error('timerId must be a string');
         var timer = self.timers[timerId];
         if (!timer) throw new Error('timer '+timerId+' does not exist');
 

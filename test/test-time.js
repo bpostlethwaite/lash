@@ -42,12 +42,12 @@ test('Lash timer error test', function (t) {
 
     // try calling startTimer() without a timerId
     t.throws(function () { s.startTimer();},
-             Error('no timerId specified'),
+             Error('timerId must be a string'),
              'expected error throws when no timerId provided');
 
     // try calling startTimer() without a timerId
     t.throws(function () { s.time();},
-             Error('no timerId specified'),
+             Error('timerId must be a string'),
              'expected error throws when no timerId provided');
 
     // try getting time from a timer that dosent exist
