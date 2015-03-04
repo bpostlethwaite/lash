@@ -79,7 +79,7 @@ test('Lash multiple named timer test', function (t) {
         if (err) return t.fail('should not error');
 
         t.throws(function () { this.time('notaValidTimer');},
-                 TypeError("Cannot read property 'time' of undefined"),
+                 TypeError("Cannot call method 'time' of undefined"),
                  'expected error throws when timer dosent exist');
 
     });
