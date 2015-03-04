@@ -24,14 +24,21 @@ function Lash (spec) {
     var self = {};
     if (!spec) spec = {};
 
-    self.startTime = null;
+    self.timers = {};
 
-    self.startTimer = function () {
-        self.startTime = process.hrtime();
+    self.startTimer = function (timerId) {
+        if (!timerId) timerId = 'default';
+        self.timers[timerId] = {};
+        self.timers[timerId].startTime = process.hrtime();
     };
 
-    self.time = function () {
-        var stackTime = process.hrtime(self.startTime);
+    self.time = function (timerId) {
+        if (!timerId) timerId = 'default';
+        var timer = self.timers[timerId];
+
+        if (!timer) throw new Error('timer '+timerId+' does not exist');
+
+        var stackTime = process.hrtime(timer.startTime);
         var numSeconds = Math.floor((stackTime[0] + stackTime[1] / 1e9) * 1e3);
         return numSeconds;
     };
@@ -41,7 +48,6 @@ function Lash (spec) {
     });
 
     var steps = [];
-
 
     function stack (fn) {
         steps.push(fn);
