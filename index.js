@@ -27,15 +27,14 @@ function Lash (spec) {
     self.timers = {};
 
     self.startTimer = function (timerId) {
-        if (!timerId) timerId = 'default';
+        if (!timerId) throw new Error('no timerId specified');
         self.timers[timerId] = {};
         self.timers[timerId].startTime = process.hrtime();
     };
 
     self.time = function (timerId) {
-        if (!timerId) timerId = 'default';
+        if (!timerId) throw new Error('no timerId specified');
         var timer = self.timers[timerId];
-
         if (!timer) throw new Error('timer '+timerId+' does not exist');
 
         var stackTime = process.hrtime(timer.startTime);
